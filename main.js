@@ -10,7 +10,7 @@ function createWindow () {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     },
-    autoHideMenuBar: false // true to hide, press Alt to show when hidden
+    autoHideMenuBar: true // true to hide, press Alt to show when hidden
   })
 
   // and load the index.html of the app.
@@ -24,7 +24,6 @@ function createWindow () {
 // Called when Electron is ready to create browser windows.
 app.whenReady().then(() => {
 
-
   createWindow()
 
   // Check original template for MacOS stuff!
@@ -34,10 +33,16 @@ app.whenReady().then(() => {
 ipcMain.handle('get-stuff-from-main', () => 'Stuff from main!')
 ipcMain.handle('send-stuff-to-main', async (event, data) => console.log(data))
 
+// "databas" simulerar t.ex SQL connection
+const products = [
+  { id: 1, name: "Hat", price: 15 },
+  { id: 2, name: "Shirt", price: 25 },
+  { id: 3, name: "Shoes", price: 70 }
+]
+ipcMain.handle('list-products', () => products)
+ipcMain.handle('get-product', async (event, id) => products[id-1])
 
 app.on('window-all-closed', function () {
   app.quit()
   // Check original template for MacOS stuff!
 })
-
-

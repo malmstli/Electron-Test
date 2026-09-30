@@ -6,7 +6,7 @@
  * to expose Node.js functionality from the main process.
  */
 
-(async() => {
+(async () => {
 
     // Run a function that gets data from main.js
     console.log(await window.exposed.getStuffFromMain())
@@ -14,4 +14,25 @@
     // Run a function sends data to main.js
     await window.exposed.sendStuffToMain('Stuff from renderer')
     
+    console.log(await window.exposed.listProducts())
+
+    async function getProduct(id) {
+        const p = await window.exposed.getProduct(id)
+
+        document.getElementById('product').innerHTML = `
+            ${p.id} - ${p.name} - ${p.price} €
+        `;
+    }
+
+    for (p of await window.exposed.listProducts()) {
+        document.getElementById('products').innerHTML += `
+            <li data-id="${p.id}">${p.id} - ${p.name}</li>
+        `;
+    }
+
+    document.getElementById('products').addEventListener('click', (e) => {
+        getProduct(e.target.dataset.id);
+    })
+
+
 })()

@@ -10,6 +10,10 @@ contextBridge.exposeInMainWorld('exposed', {
   getStuffFromMain: () => ipcRenderer.invoke('get-stuff-from-main'),
 
   // send data back to main
-  sendStuffToMain: (data) => ipcRenderer.invoke('send-stuff-to-main', data)
+  sendStuffToMain: (data) => ipcRenderer.invoke('send-stuff-to-main', data),
+
+  listProducts: () => ipcRenderer.invoke('list-products'),
+  getProduct: (id) => ipcRenderer.invoke('get-product', id)
+
 
 })
